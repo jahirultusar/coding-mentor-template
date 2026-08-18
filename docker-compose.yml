@@ -2,6 +2,7 @@ services:
   mentor:
     build: .
     container_name: coding-mentor
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - .:/workspace
     working_dir: /workspace
