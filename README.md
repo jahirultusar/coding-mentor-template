@@ -27,15 +27,24 @@ This repository is configured as a **GitHub Repository Template**. Do not fork o
 
 Before getting started, please make sure you have the following installed on your host machine:
 * **Docker & Docker Compose** (To isolate and run your coding environments)
-* **Claude Code** (Anthropic's command-line AI assistant)
 
+> **Note**: You don't need Claude Code installed on your host to use this repo — the Docker image builds it in during docker compose up -d --build, so it's already present by the time you exec into the container.
 ---
 
 ## 🚀 Quick Start
 
-You can run Claude Code either inside the isolated Docker container or directly from your host machine targeting this directory.
+### 1. Set your host UID/GID (one-time, per machine)
 
-### 1. Spin up the Environment
+The container runs as your own user (not root) so that files it creates are owned by you on the host, not root. Add this to your `~/.bashrc` (or `~/.zshrc`), then reload your shell:
+
+```bash
+export UID
+export GID=$(id -g)
+```
+
+This step matters — without it, Docker falls back to default IDs and files created inside the container may end up owned by a different user than you on the host, which can block your editor from saving them.
+
+### 2. Spin up the Environment
 ```bash
 # Build and start the container in the background
 docker compose up -d --build
@@ -44,8 +53,8 @@ docker compose up -d --build
 docker compose exec mentor bash
 ```
 
-### 2. Start a Session
-Launch Claude Code within this repository directory:
+### 3. Start a Session
+Launch Claude Code within this repository directory inside docker:
 ```bash
 claude
 ```
@@ -94,6 +103,36 @@ graph TD
 
 ---
 
+## 🐛 Troubleshooting
+
+### "Insufficient permissions" / editor asks to save as sudo
+
+This happens when files inside `challenges/` or `archive/` are owned by `root` instead of your host user. It's usually caused by one of:
+
+* You skipped the UID/GID export step above before first building the container.
+* You ran `docker compose exec mentor bash` on an older build of this container, back when it ran as `root` by default.
+
+**Fix:**
+```bash
+# From your host (not inside the container), reclaim ownership:
+sudo chown -R $USER:$USER /path/to/your/coding-mentor
+
+# Make sure UID/GID are exported (see Quick Start step 1), then rebuild:
+docker compose down
+docker compose up -d --build
+```
+
+### Editing on host vs. inside the container
+
+If your editor is attached directly to the **host** filesystem (not the container itself, e.g. via SSH/Remote to your machine rather than Dev Containers), you can still edit files fine — the bind mount keeps host and container in sync. But running/debugging code from the host side will use your **host's** Python and won't have access to the packages installed in the container (`pytest`, `ruff`, etc.). For now, run and test your solutions from inside the container shell:
+```bash
+docker compose exec mentor bash
+pytest challenges/<challenge-folder>/solution/test_solution.py -v
+```
+If you want your editor's Run/Debug buttons to use the container's environment directly, look into the **Dev Containers** extension (VS Code) — that's an optional upgrade once the basic loop is working smoothly.
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome to help expand the default project templates and mentoring heuristics! 
@@ -106,4 +145,4 @@ Contributions are welcome to help expand the default project templates and mento
 
 ---
 
-Happy learning :) 
+Happy learning :)
