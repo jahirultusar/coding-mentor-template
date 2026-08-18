@@ -55,7 +55,7 @@ docker compose exec mentor bash
 ```
 
 ### 3. Start a Session
-Launch Claude Code within this repository directory:
+Launch Claude Code within this interactive shell -- repository directory:
 ```bash
 claude
 ```
