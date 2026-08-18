@@ -24,11 +24,15 @@ RUN pip3 install --break-system-packages --no-cache-dir \
     black \
     ipython
 
-# Claude Code (native installer, no Node.js required)
-RUN curl -fsSL https://claude.ai/install.sh -o /tmp/claude-install.sh \
-    && bash /tmp/claude-install.sh \
-    && rm -f /tmp/claude-install.sh
-ENV PATH="/root/.local/bin:${PATH}"
+# Node.js (required for Claude Code via npm)
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource_setup.sh \
+    && bash /tmp/nodesource_setup.sh \
+    && rm -f /tmp/nodesource_setup.sh \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Claude Code — pinned to a specific version for reproducibility
+RUN npm install -g @anthropic-ai/claude-code@2.1.234
 
 WORKDIR /workspace
 
