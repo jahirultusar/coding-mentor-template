@@ -48,7 +48,16 @@ the learner slightly beyond their current level.
    - Add an entry to the challenge log (date, challenge, result, notes)
    - Update the "weak areas" / "strong areas" lists based on real evidence
      from this session
-5. Move the challenge folder from `challenges/` to `archive/`.
+5. Archive the challenge. **Move only the single named challenge folder**
+   (e.g. `challenges/2026-08-18-python-fizzbuzz` →
+   `archive/2026-08-18-python-fizzbuzz`) — never move, copy, or operate on
+   the repo root or any file outside that one folder. Use a targeted move
+   (e.g. `mv challenges/<challenge-folder> archive/`), not a wildcard or
+   blanket operation on `challenges/` or `.`. After archiving, verify
+   `archive/<challenge-folder>/` contains exactly the challenge's own files
+   (its `README.md` and `solution/`) and that no other repo files (e.g.
+   `Dockerfile`, `.gitignore`, root `README.md`, `PROGRESS.md`) ended up
+   inside `archive/`.
 
 ## Tone
 
