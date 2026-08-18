@@ -24,6 +24,10 @@ RUN pip3 install --break-system-packages --no-cache-dir \
     black \
     ipython
 
+# Claude Code (native installer, no Node.js required)
+RUN curl -fsSL https://claude.ai/install.sh | bash
+ENV PATH="/root/.local/bin:${PATH}"
+
 WORKDIR /workspace
 
 CMD ["/bin/bash"]
