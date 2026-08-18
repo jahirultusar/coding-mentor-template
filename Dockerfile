@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     less \
     jq \
+    gosu \
     && rm -rf /var/lib/apt/lists/*
 
 # Common Python tooling (test runner, linter, formatter)
@@ -26,4 +27,8 @@ RUN pip3 install --break-system-packages --no-cache-dir \
 
 WORKDIR /workspace
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

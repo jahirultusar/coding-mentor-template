@@ -2,7 +2,9 @@ services:
   mentor:
     build: .
     container_name: coding-mentor
-    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    environment:
+      - LOCAL_UID=${LOCAL_UID:-1000}
+      - LOCAL_GID=${LOCAL_GID:-1000}
     volumes:
       - .:/workspace
     working_dir: /workspace
