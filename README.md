@@ -37,10 +37,8 @@ Before getting started, please make sure you have the following installed on you
 
 The container runs as your own user (not root) so that files it creates are owned by you on the host, not root. Add this to your `~/.bashrc` (or `~/.zshrc`), then reload your shell:
 
-```bash
-export UID
-export GID=$(id -g)
-```
+    export UID="$(id -u)"
+    export GID="$(id -g)"
 
 This step matters — without it, Docker falls back to default IDs and files created inside the container may end up owned by a different user than you on the host, which can block your editor from saving them.
 
