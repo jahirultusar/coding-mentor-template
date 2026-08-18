@@ -24,10 +24,12 @@ RUN pip3 install --break-system-packages --no-cache-dir \
     black \
     ipython
 
-# Node.js (required for Claude Code via npm)
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource_setup.sh \
-    && bash /tmp/nodesource_setup.sh \
-    && rm -f /tmp/nodesource_setup.sh \
+# Node.js 22.x — added via signed apt repository (no shell script execution)
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+        | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" \
+        > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
