@@ -1,7 +1,7 @@
 # Progress Log
 
 ## Profile
-- Background: DevOps apprentice, completed a bootcamp, currently on placement
+- Background: Wants to practice programming challenges. Start from very basic beginner level.
 - Primary practice language: Python (others may be added later)
 - Goal: build general coding fluency and problem-solving speed
 
