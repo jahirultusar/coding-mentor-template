@@ -59,7 +59,7 @@ Launch Claude Code within this interactive shell -- repository directory:
 ```bash
 claude
 ```
-Once the CLI initializes, prompt your mentor to begin:
+Once the CLI initializes, you may need to authenticate claude. once done, prompt your claude mentor to begin:
 > *"Give me a new challenge based on my current track."*  
 > OR  
 > *"What should I work on today?"*
